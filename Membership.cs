@@ -5,7 +5,8 @@ namespace Putn
         public MemberType Type { get; set; }
     }
 
-    public enum MemberType {
+    public enum MemberType 
+    {
         Diamond,
         Gold
     }
