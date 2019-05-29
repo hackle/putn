@@ -16,7 +16,7 @@ namespace Putn
 
             var actual = shoppingController.CalculateTotalPayable(items, member, null);
 
-            Assert.Equal(actual, 0);
+            Assert.Equal(0, actual);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Putn
 
             var actual = shoppingController.CalculateTotalPayable(items, member, promoCode);
 
-            Assert.Equal(actual, 10);
+            Assert.Equal(9, actual);
         }
     }
 }

@@ -15,40 +15,59 @@ namespace Putn
 
         public decimal CalculateTotalPayable(IEnumerable<Item> items, Membership member, string promoCode) 
         {
-            var memberDiscountPercentage = 0;
-            switch (member.Type)
-            {
-                case MemberType.Diamond: 
-                    memberDiscountPercentage = 10;
-                    break;
-                case MemberType.Gold:
-                    memberDiscountPercentage = 5;
-                    break;
-                default: 
-                    break;
-            }
+            var memberDiscountPercentage = MemberDiscount.GetInPercentage(member);
+            var promoDiscountPercentage = PromoCodeDiscount.GetInPercentage(promoCode);
 
-            var promoDiscountPercentage = 0;
-            if (promoCode == "akaramba")
-            {
-                promoDiscountPercentage = 8;
-            }
-            else if (promoCode == "excellent")
-            {
-                promoDiscountPercentage = 6;
-            }
-
-            var discountToApply = Math.Max(memberDiscountPercentage, promoDiscountPercentage);
-            var totalPayable = items.Sum(item => {
-                if (item.IsDiscountable)
-                    return item.Price * (1.0m - discountToApply / 100);
-                else 
-                    return item.Price;
-            });
+            var totalPayable = items.Sum(item => ItemSalePrice.Calculate(item, memberDiscountPercentage, promoDiscountPercentage));
 
             this.loggingService.Log(LogLevel.Info, $"logging that member XYZ gets prices for ABC with dicount so and so");
 
             return totalPayable;
+        }
+    }
+
+    public static class MemberDiscount 
+    {
+        public static int GetInPercentage(Membership member)
+        {
+            switch (member.Type)
+            {
+                case MemberType.Diamond: return 10;
+                case MemberType.Gold: return 5;
+                default: return 0;
+            }
+        }
+    }
+    public static class PromoCodeDiscount
+    {
+        public static int GetInPercentage(string promoCode)
+        {        
+            if (promoCode == "akaramba")
+            {
+                return 8;
+            }
+            else if (promoCode == "excellent")
+            {
+                return 6;
+            }
+
+            return 0;
+        }
+    }
+
+    public static class ItemSalePrice
+    {
+        public static decimal Calculate(
+            Item item, 
+            decimal memberDiscountPercentage, 
+            decimal promoDiscountPercentage)
+        {
+            var discountToApply = Math.Max(memberDiscountPercentage, promoDiscountPercentage);
+            
+            if (item.IsDiscountable)
+                return item.Price * (1.0m - discountToApply / 100);
+            else 
+                return item.Price;
         }
     }
 }
