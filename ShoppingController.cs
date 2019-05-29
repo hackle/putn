@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Putn
 {
-    public class ShoppingController
+    public static class ShoppingController
     {
-        public decimal CalculateTotalPayable(IEnumerable<Item> items, 
+        public static decimal CalculateTotalPayable(IEnumerable<Item> items, 
             Membership member, 
             string promoCode,
             Action<LogLevel, string> log) 
