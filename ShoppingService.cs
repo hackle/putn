@@ -1,14 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Putn
 {
-    public class ShoppingController
+    public class ShoppingService
     {
         private ILoggingService loggingService;
 
-        public ShoppingController(ILoggingService loggingService)
+        public ShoppingService(ILoggingService loggingService)
         {
             this.loggingService = loggingService;
         }

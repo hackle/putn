@@ -5,16 +5,16 @@ using Xunit;
 
 namespace Putn
 {
-    public class ShoppingControllerTests
+    public class ShoppingServiceTests
     {
         [Fact]
         public void If_no_items_Then_nothing_to_pay()
         {
             var items = Enumerable.Empty<Item>();
             var member = new Membership { Type = MemberType.Diamond };
-            var shoppingController = new ShoppingController(Mock.Of<ILoggingService>());
+            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>());
 
-            var actual = shoppingController.CalculateTotalPayable(items, member, null);
+            var actual = shoppingService.CalculateTotalPayable(items, member, null);
 
             Assert.Equal(actual, 0);
         }
@@ -25,9 +25,9 @@ namespace Putn
             var items = new [] { new Item { IsDiscountable = true, Price = 10m } };
             var member = new Membership { Type = MemberType.Diamond };
             var promoCode = "akaramba";
-            var shoppingController = new ShoppingController(Mock.Of<ILoggingService>());
+            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>());
 
-            var actual = shoppingController.CalculateTotalPayable(items, member, promoCode);
+            var actual = shoppingService.CalculateTotalPayable(items, member, promoCode);
 
             Assert.Equal(actual, 10);
         }
