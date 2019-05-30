@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Putn
 {
-    public class ShoppingService
+    public class ShoppingService : IShoppingService
     {
         private readonly ILoggingService loggingService;
         private readonly IAccountRepository accountRepo;
