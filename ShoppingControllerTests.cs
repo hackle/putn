@@ -12,9 +12,8 @@ namespace Putn
         {
             var items = Enumerable.Empty<Item>();
             var member = new Membership { Type = MemberType.Diamond };
-            var shoppingController = new ShoppingController();
 
-            var actual = shoppingController.CalculateTotalPayable(items, member, null, (level, msg) => {});
+            var actual = ShoppingController.CalculateTotalPayable(items, member, null, (level, msg) => {});
 
             Assert.Equal(0, actual);
         }
@@ -25,9 +24,8 @@ namespace Putn
             var items = new [] { new Item { IsDiscountable = true, Price = 10m } };
             var member = new Membership { Type = MemberType.Diamond };
             var promoCode = "akaramba";
-            var shoppingController = new ShoppingController();
 
-            var actual = shoppingController.CalculateTotalPayable(items, member, promoCode, (LogLevel, msg) => {});
+            var actual = ShoppingController.CalculateTotalPayable(items, member, promoCode, (LogLevel, msg) => {});
 
             Assert.Equal(9, actual);
         }
