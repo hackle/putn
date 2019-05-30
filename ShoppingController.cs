@@ -1,24 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Putn
 {
-    public static class ShoppingController
+    public class ShoppingController
     {
-        public static decimal CalculateTotalPayable(IEnumerable<Item> items, 
-            Membership member, 
-            string promoCode,
-            Action<LogLevel, string> log) 
+        public void Buy(BuyRequest request)
         {
-            var memberDiscountPercentage = MemberDiscount.GetInPercentage(member);
-            var promoDiscountPercentage = PromoCodeDiscount.GetInPercentage(promoCode);
-
-            var totalPayable = items.Sum(item => ItemSalePrice.Calculate(item, memberDiscountPercentage, promoDiscountPercentage));
-
-            log(LogLevel.Info, $"logging that member XYZ gets prices for ABC with dicount so and so");
-
-            return totalPayable;
+            var member = new Membership { Type = MemberType.Diamond };
+            ShoppingService.Buy(request.Items, member, request.PromoCode);
         }
     }
 }

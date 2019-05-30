@@ -4,7 +4,7 @@ namespace Putn
 {
     public class LoggingService
     {
-        public void Log(LogLevel logLevel, string message)
+        public static void Log(LogLevel logLevel, string message)
         {
             Console.WriteLine($"{logLevel}: {message}");
         }
