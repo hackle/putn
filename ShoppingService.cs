@@ -51,7 +51,7 @@ namespace Putn
             var purchases = items.Select(item => {
                 decimal purchasePrice;
                 if (item.IsDiscountable)
-                    purchasePrice = item.Price * (1.0m - discountToApply / 100);
+                    purchasePrice = item.Price * (100 - discountToApply) / 100;
                 else 
                     purchasePrice = item.Price;
 
