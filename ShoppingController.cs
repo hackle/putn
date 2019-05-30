@@ -2,9 +2,9 @@ namespace Putn
 {
     public class ShoppingController
     {
-        private readonly ShoppingService shoppingService;
+        private readonly IShoppingService shoppingService;
 
-        public ShoppingController(ShoppingService shoppingService)
+        public ShoppingController(IShoppingService shoppingService)
         {
             this.shoppingService = shoppingService;
         }
