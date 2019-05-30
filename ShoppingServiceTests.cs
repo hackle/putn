@@ -11,12 +11,13 @@ namespace Putn
         public void If_no_items_Then_nothing_to_pay()
         {
             var items = Enumerable.Empty<Item>();
-            var member = new Membership { Type = MemberType.Diamond };
-            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>());
+            var member = new Membership { ID = 1, Type = MemberType.Diamond };
+            var accountRepo = Mock.Of<IAccountRepository>();
+            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>(), accountRepo, Mock.Of<IPurchaseRepository>());
 
-            var actual = shoppingService.CalculateTotalPayable(items, member, null);
+            shoppingService.Buy(items, member, null);
 
-            Assert.Equal(actual, 0);
+            Mock.Get(accountRepo).Verify(r => r.Debit(1, 0), Times.Once);
         }
 
         [Fact]
@@ -25,11 +26,12 @@ namespace Putn
             var items = new [] { new Item { IsDiscountable = true, Price = 10m } };
             var member = new Membership { Type = MemberType.Diamond };
             var promoCode = "akaramba";
-            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>());
+            var accountRepo = Mock.Of<IAccountRepository>();
+            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>(), accountRepo, Mock.Of<IPurchaseRepository>());
 
-            var actual = shoppingService.CalculateTotalPayable(items, member, promoCode);
+            shoppingService.Buy(items, member, promoCode);
 
-            Assert.Equal(actual, 10);
+            Mock.Get(accountRepo).Verify(r => r.Debit(1, 9m), Times.Once);
         }
     }
 }

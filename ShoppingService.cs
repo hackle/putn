@@ -6,15 +6,22 @@ namespace Putn
 {
     public class ShoppingService
     {
-        private ILoggingService loggingService;
+        private readonly ILoggingService loggingService;
+        private readonly IAccountRepository accountRepo;
+        private readonly IPurchaseRepository purchaseRepo;
 
-        public ShoppingService(ILoggingService loggingService)
+        public ShoppingService(ILoggingService loggingService, 
+            IAccountRepository accountRepo,
+            IPurchaseRepository purchaseRepo)
         {
             this.loggingService = loggingService;
+            this.accountRepo = accountRepo;
+            this.purchaseRepo = purchaseRepo;
         }
 
-        public decimal CalculateTotalPayable(IEnumerable<Item> items, Membership member, string promoCode) 
+        public void Buy(IEnumerable<Item> items, Membership member, string promoCode) 
         {
+            // decide member discount
             var memberDiscountPercentage = 0;
             switch (member.Type)
             {
@@ -28,6 +35,7 @@ namespace Putn
                     break;
             }
 
+            // decide promo discount
             var promoDiscountPercentage = 0;
             if (promoCode == "akaramba")
             {
@@ -38,17 +46,23 @@ namespace Putn
                 promoDiscountPercentage = 6;
             }
 
+            // decide applicable discount and create purchases
             var discountToApply = Math.Max(memberDiscountPercentage, promoDiscountPercentage);
-            var totalPayable = items.Sum(item => {
+            var purchases = items.Select(item => {
+                decimal purchasePrice;
                 if (item.IsDiscountable)
-                    return item.Price * (1.0m - discountToApply / 100);
+                    purchasePrice = item.Price * (1.0m - discountToApply / 100);
                 else 
-                    return item.Price;
+                    purchasePrice = item.Price;
+
+                return new Purchase { ItemID = item.ID, PurchasePrice = purchasePrice, MemberID = member.ID };
             });
 
-            this.loggingService.Log(LogLevel.Info, $"logging that member XYZ gets prices for ABC with dicount so and so");
+            // log and persist
+            this.loggingService.Log(LogLevel.Info, $"We got member {member.ID} hooked!");
 
-            return totalPayable;
+            this.purchaseRepo.Save(purchases);
+            this.accountRepo.Debit(member.ID, purchases.Sum(p => p.PurchasePrice));
         }
     }
 }
