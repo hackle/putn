@@ -6,7 +6,12 @@ namespace Putn
         public void Buy(BuyRequest request)
         {
             var member = new Membership { Type = MemberType.Diamond };
-            ShoppingService.Buy(request.Items, member, request.PromoCode);
+            ShoppingService.Buy(request.Items, 
+                member, 
+                request.PromoCode,
+                LoggingService.Log,
+                PurchaseRepository.Save,
+                AccountRepository.Debit);
         }
     }
 }

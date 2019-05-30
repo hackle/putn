@@ -6,7 +6,12 @@ namespace Putn
 {
     public class ShoppingService
     {
-        public static void Buy(IEnumerable<Item> items, Membership member, string promoCode) 
+        public static void Buy(IEnumerable<Item> items, 
+            Membership member, 
+            string promoCode,
+            Action<LogLevel, string> log,
+            Action<IEnumerable<Purchase>> savePurchases,
+            Action<int, decimal> debitFromMemberAccount) 
         {
             var memberDiscountPercentage = MemberDiscount.GetInPercentage(member);
             var promoDiscountPercentage = PromoCodeDiscount.GetInPercentage(promoCode);
@@ -16,10 +21,10 @@ namespace Putn
                 PurchasePrice = ItemSalePrice.Calculate(item, memberDiscountPercentage, promoDiscountPercentage)
             });
 
-            LoggingService.Log(LogLevel.Info, $"We got member {member.ID} hooked!");
+            log(LogLevel.Info, $"We got member {member.ID} hooked!");
 
-            PurchaseRepository.Save(purchases);
-            AccountRepository.Debit(member.ID, purchases.Sum(p => p.PurchasePrice));
+            savePurchases(purchases);
+            debitFromMemberAccount(member.ID, purchases.Sum(p => p.PurchasePrice));
         }
     }
 }
