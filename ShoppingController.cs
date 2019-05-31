@@ -11,8 +11,9 @@ namespace Putn
 
         public void Buy(BuyRequest request)
         {
-            var member = new Membership { Type = MemberType.Diamond };
-            this.shoppingService.Buy(request.Items, member, request.PromoCode);
+            this.shoppingService.Buy(request.ItemIDs, ContextualMemberID, request.PromoCode);
         }
+
+        private int ContextualMemberID = 20190620;
     }
 }

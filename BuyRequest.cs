@@ -4,7 +4,7 @@ namespace Putn
 {
     public class BuyRequest
     {
-        public IEnumerable<Item> Items { get; set; }
+        public IEnumerable<int> Items { get; set; }
 
         public string PromoCode { get; set; }
     }
