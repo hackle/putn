@@ -9,6 +9,7 @@ namespace Putn
     public enum MemberType 
     {
         Diamond,
-        Gold
+        Gold,
+        MostValued
     }
 }
