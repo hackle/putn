@@ -7,20 +7,26 @@ namespace Putn
     public class ShoppingService : IShoppingService
     {
         private readonly ILoggingService loggingService;
+        private readonly IItemRepository itemRepo;
         private readonly IAccountRepository accountRepo;
-        private readonly IPurchaseRepository purchaseRepo;
+        private readonly IMemberRepository memberRepo;
 
         public ShoppingService(ILoggingService loggingService, 
+            IItemRepository itemRepo,
             IAccountRepository accountRepo,
-            IPurchaseRepository purchaseRepo)
+            IMemberRepository memberRepo)
         {
             this.loggingService = loggingService;
+            this.itemRepo = itemRepo;
             this.accountRepo = accountRepo;
-            this.purchaseRepo = purchaseRepo;
+            this.memberRepo = memberRepo;
         }
 
-        public void Buy(IEnumerable<Item> items, Membership member, string promoCode) 
+        public void Buy(IEnumerable<int> itemIDs, int memberID, string promoCode) 
         {
+            var member = this.memberRepo.FindMember(memberID);
+            var items = this.itemRepo.FindByIDs(itemIDs);
+
             // decide member discount
             var memberDiscountPercentage = 0;
             switch (member.Type)
@@ -34,6 +40,9 @@ namespace Putn
                 default: 
                     break;
             }
+            if (member.Birthday.Month == DateTime.Now.Month &&
+                member.Birthday.Date == DateTime.Now.Date)
+                memberDiscountPercentage = 50;
 
             // decide promo discount
             var promoDiscountPercentage = 0;
@@ -48,21 +57,17 @@ namespace Putn
 
             // decide applicable discount and create purchases
             var discountToApply = Math.Max(memberDiscountPercentage, promoDiscountPercentage);
-            var purchases = items.Select(item => {
-                decimal purchasePrice;
+            var totalPayable = items.Sum(item => {
                 if (item.IsDiscountable)
-                    purchasePrice = item.Price * (100 - discountToApply) / 100;
+                    return item.Price * (100 - discountToApply) / 100;
                 else 
-                    purchasePrice = item.Price;
-
-                return new Purchase { ItemID = item.ID, PurchasePrice = purchasePrice, MemberID = member.ID };
+                    return item.Price;
             });
 
             // log and persist
             this.loggingService.Log(LogLevel.Info, $"We got member {member.ID} hooked!");
 
-            this.purchaseRepo.Save(purchases);
-            this.accountRepo.Debit(member.ID, purchases.Sum(p => p.PurchasePrice));
+            this.accountRepo.Debit(member.ID, totalPayable);
         }
     }
 }
