@@ -40,9 +40,12 @@ namespace Putn
                 default: 
                     break;
             }
+
             if (member.Birthday.Month == DateTime.Now.Month &&
                 member.Birthday.Date == DateTime.Now.Date)
-                memberDiscountPercentage = 50;
+                {
+                    memberDiscountPercentage = 50;
+                }
 
             // decide promo discount
             var promoDiscountPercentage = 0;
@@ -65,9 +68,9 @@ namespace Putn
             });
 
             // log and persist
-            this.loggingService.Log(LogLevel.Info, $"We got member {member.ID} hooked!");
+            this.loggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
 
-            this.accountRepo.Debit(member.ID, totalPayable);
+            this.accountRepo.Debit(memberID, totalPayable);
         }
     }
 }

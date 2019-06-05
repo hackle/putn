@@ -6,7 +6,7 @@ namespace Putn
     {
         public void Log(LogLevel logLevel, string message)
         {
-            Console.WriteLine($"{logLevel}: {message}");
+            throw new InvalidOperationException($"{nameof(LoggingService)} I.O. is nice but not for tests");
         }
     }
     

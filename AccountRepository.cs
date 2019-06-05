@@ -6,12 +6,7 @@ namespace Putn
     {
         public void Debit(int memberID, decimal totalPayable)
         {
-            Console.WriteLine("Congratulations we've got your money!");
+            throw new InvalidOperationException($"{nameof(AccountRepository)} I.O. is nice but not for tests");
         }
-    }
-    
-    public interface IAccountRepository
-    {
-        void Debit(int memberID, decimal totalPayable);
     }
 }

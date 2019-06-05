@@ -8,30 +8,30 @@ namespace Putn
     public class ShoppingServiceTests
     {
         [Fact]
-        public void If_no_items_Then_nothing_to_pay()
+        public void If_member_is_buying_nothing_Then_should_not_be_debitted()
         {
-            var items = Enumerable.Empty<Item>();
-            var member = new Membership { ID = 1, Type = MemberType.Diamond };
+            var itemIDs = Enumerable.Empty<int>();
+            var memberID = 12345;
+            var member = new Membership { Birthday = DateTime.Now };
+
             var accountRepo = Mock.Of<IAccountRepository>();
-            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>(), accountRepo, Mock.Of<IPurchaseRepository>());
+            var itemRepo = Mock.Of<IItemRepository>(i => i.FindByIDs(itemIDs) == new Item[]{});
+            var memberRepo = Mock.Of<IMemberRepository>(m => m.FindMember(memberID) == member);
 
-            shoppingService.Buy(items, member, null);
+            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>(), 
+                itemRepo,
+                accountRepo, 
+                memberRepo);
 
-            Mock.Get(accountRepo).Verify(r => r.Debit(1, 0), Times.Once);
+            shoppingService.Buy(itemIDs, memberID, null);
+
+            Mock.Get(accountRepo).Verify(r => r.Debit(memberID, 0), Times.Once);
         }
 
         [Fact]
-        public void If_item_is_discountable_And_member_is_diamond_And_promo_code_is_akaramba_Then_discount_by_10_percent()
+        public void If_item_is_discountable_And_member_is_having_birthday_And_promo_code_is_akaramba_Then_discount_by_10_percent()
         {
-            var items = new [] { new Item { IsDiscountable = true, Price = 10m } };
-            var member = new Membership { ID = 1, Type = MemberType.Diamond };
-            var promoCode = "akaramba";
-            var accountRepo = Mock.Of<IAccountRepository>();
-            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>(), accountRepo, Mock.Of<IPurchaseRepository>());
-
-            shoppingService.Buy(items, member, promoCode);
-
-            Mock.Get(accountRepo).Verify(r => r.Debit(1, 9m), Times.Once);
+            // try write this test
         }
     }
 }
