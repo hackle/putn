@@ -4,7 +4,7 @@ This the sample project for the workshop, in C# / .NET Core.
 
 TL;DR if you can run `dotnet test` and see tests pass then chances are you are all set.
 
-Be warned: this code in this project may change from time to time and workshop to workshop (possibly just very slightly and the gist should stay the same).
+Be warned: the code in this project may change from time to time and workshop to workshop (possibly just very slightly and the gist should stay the same).
 
 ## Prerequisites
 
