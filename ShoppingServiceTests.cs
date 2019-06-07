@@ -10,22 +10,30 @@ namespace Putn
         [Fact]
         public void If_member_is_buying_nothing_Then_should_not_be_debitted()
         {
+            // Arrange
             var itemIDs = Enumerable.Empty<int>();
             var memberID = 12345;
             var member = new Membership { Birthday = DateTime.Now };
 
-            var accountRepo = Mock.Of<IAccountRepository>();
-            var itemRepo = Mock.Of<IItemRepository>(i => i.FindByIDs(itemIDs) == new Item[]{});
-            var memberRepo = Mock.Of<IMemberRepository>(m => m.FindMember(memberID) == member);
+            var loggingServiceMock = new Mock<ILoggingService>();
+            var accountRepoMock = new Mock<IAccountRepository>();
 
-            var shoppingService = new ShoppingService(Mock.Of<ILoggingService>(), 
-                itemRepo,
-                accountRepo, 
-                memberRepo);
+            var itemRepoMock = new Mock<IItemRepository>();
+            itemRepoMock.Setup(i => i.FindByIDs(itemIDs)).Returns(new Item[]{});
 
-            shoppingService.Buy(itemIDs, memberID, null);
+            var memberRepoMock = new Mock<IMemberRepository>();
+            memberRepoMock.Setup(m => m.FindByID(memberID)).Returns(member);
 
-            Mock.Get(accountRepo).Verify(r => r.Debit(memberID, 0), Times.Once);
+            var shoppingService = new ShoppingService(loggingServiceMock.Object, 
+                itemRepoMock.Object,
+                accountRepoMock.Object, 
+                memberRepoMock.Object);
+
+            // Act
+            shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
+
+            // Assert
+            accountRepoMock.Verify(r => r.Debit(memberID, 0), Times.Once);
         }
 
         [Fact]

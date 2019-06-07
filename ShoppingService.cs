@@ -22,30 +22,18 @@ namespace Putn
             this.memberRepo = memberRepo;
         }
 
-        public void Buy(IEnumerable<int> itemIDs, int memberID, string promoCode) 
+        public void Buy(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
         {
-            var member = this.memberRepo.FindMember(memberID);
+            var member = this.memberRepo.FindByID(memberID);
             var items = this.itemRepo.FindByIDs(itemIDs);
 
-            // decide member discount
+            // decide birthday discount
             var memberDiscountPercentage = 0;
-            switch (member.Type)
+            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
+            if (isBirthday)
             {
-                case MemberType.Diamond: 
-                    memberDiscountPercentage = 10;
-                    break;
-                case MemberType.Gold:
-                    memberDiscountPercentage = 5;
-                    break;
-                default: 
-                    break;
+                memberDiscountPercentage = 50;
             }
-
-            if (member.Birthday.Month == DateTime.Now.Month &&
-                member.Birthday.Date == DateTime.Now.Date)
-                {
-                    memberDiscountPercentage = 50;
-                }
 
             // decide promo discount
             var promoDiscountPercentage = 0;
@@ -53,7 +41,7 @@ namespace Putn
             {
                 promoDiscountPercentage = 8;
             }
-            else if (promoCode == "excellent")
+            else if (promoCode == "excellent!")
             {
                 promoDiscountPercentage = 6;
             }
