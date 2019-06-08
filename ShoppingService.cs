@@ -37,9 +37,14 @@ namespace Putn
             this.paymentService.Charge(memberID, totalPayable);
         }
 
-        public static double CalculateTotalPayable(IEnumerable<Item> items, double discountToAppy)
+        public static decimal CalculateTotalPayable(IEnumerable<Item> items, decimal discountToApply)
         {
-            throw new NotImplementedException();
+            return items.Sum(item => {
+                if (item.IsDiscountable)
+                    return item.Price * (100 - discountToApply) / 100;
+                else 
+                    return item.Price;
+            });
         }
 
         public static int CalculateDiscountForPromoCode(string promoCode, DateTime when)
@@ -47,7 +52,7 @@ namespace Putn
             throw new NotImplementedException();
         }
 
-        public static double CalculateDiscountForMemberBirthday(Member member, DateTime when)
+        public static decimal CalculateDiscountForMemberBirthday(Member member, DateTime when)
         {
             throw new NotImplementedException();
         }
