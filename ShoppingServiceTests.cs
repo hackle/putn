@@ -16,7 +16,7 @@ namespace Putn
             var member = new Member { Birthday = DateTime.Now };
 
             var loggingServiceMock = new Mock<ILoggingService>();
-            var accountRepoMock = new Mock<IPaymentService>();
+            var paymentServiceMock = new Mock<IPaymentService>();
 
             var itemRepoMock = new Mock<IItemRepository>();
             itemRepoMock.Setup(i => i.FindByIDs(itemIDs)).Returns(new Item[]{});
@@ -26,14 +26,14 @@ namespace Putn
 
             var shoppingService = new ShoppingService(loggingServiceMock.Object, 
                 itemRepoMock.Object,
-                accountRepoMock.Object, 
+                paymentServiceMock.Object, 
                 memberRepoMock.Object);
 
             // Act
             shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
 
             // Assert
-            accountRepoMock.Verify(r => r.Charge(memberID, 0), Times.Once);
+            paymentServiceMock.Verify(r => r.Charge(memberID, 0), Times.Once);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace Putn
             var member = new Member { Birthday = DateTime.Now };
 
             var loggingServiceMock = new Mock<ILoggingService>();
-            var accountRepoMock = new Mock<IPaymentService>();
+            var paymentServiceMock = new Mock<IPaymentService>();
 
             var itemRepoMock = new Mock<IItemRepository>();
             itemRepoMock.Setup(i => i.FindByIDs(itemIDs)).Returns(items);
@@ -60,14 +60,14 @@ namespace Putn
 
             var shoppingService = new ShoppingService(loggingServiceMock.Object, 
                 itemRepoMock.Object,
-                accountRepoMock.Object, 
+                paymentServiceMock.Object, 
                 memberRepoMock.Object);
 
             // Act
             shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
 
             // Assert
-            accountRepoMock.Verify(r => r.Charge(memberID, 150), Times.Once);
+            paymentServiceMock.Verify(r => r.Charge(memberID, 150), Times.Once);
         }
 
         [Fact]
@@ -77,13 +77,13 @@ namespace Putn
         }
 
         [Fact]
-        public void If_item_is_discountable_And_member_is_having_birthday_And_promo_code_is_akaramba_Then_discount_by_50_percent()
+        public void If_item_is_discountable_And_member_is_having_birthday_And_promo_code_is_AM_and_time_is_AM_Then_discount_by_50_percent()
         {
             // try write this test
         }
 
         [Fact]
-        public void If_item_is_discountable_And_member_is_not_having_birthday_And_promo_code_is_akaramba_Then_discount_by_10_percent()
+        public void If_item_is_discountable_And_member_is_not_having_birthday_And_promo_code_is_AM_and_time_is_AM_Then_discount_by_10_percent()
         {
             // try write this test
         }

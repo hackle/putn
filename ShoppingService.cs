@@ -37,11 +37,11 @@ namespace Putn
 
             // decide promo discount
             var promoDiscountPercentage = 0;
-            if (promoCode == "akaramba")
+            if (promoCode == "AM" && when.Hour < 12)
             {
                 promoDiscountPercentage = 8;
             }
-            else if (promoCode == "excellent!")
+            else if (promoCode == "PM" && when.Hour >= 12)
             {
                 promoDiscountPercentage = 6;
             }

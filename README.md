@@ -17,8 +17,8 @@ Be warned: the code in this project may change from time to time and workshop to
 A contrived shopping feature that works as follows,
 
 1. accepts a `BuyRequest`
-2. calculate and apply discounts (with information from Database and the `BuyRequest`)
-3. debit the member's account
+2. calculates and applies discounts
+3. charges member the discounted price 
 
 ### How discounts are calculated
 - if member is having a birthday, then a certain discount is given
