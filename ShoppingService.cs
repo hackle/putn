@@ -6,19 +6,25 @@ namespace Putn
 {
     public static class ShoppingService
     {    
-        public static void Checkout(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
+        public static void Checkout(IEnumerable<int> itemIDs, 
+            int memberID, 
+            string promoCode, 
+            DateTime when,
+            Func<int, Member> findMemberByID,
+            Func<IEnumerable<int>, IEnumerable<Item>> findItemsByIDs,
+            Action<LogLevel, string> log,
+            Action<int, decimal> chargeMember) 
         {
-            var member = MemberRepository.FindByID(memberID);
-            var items = ItemRepository.FindByIDs(itemIDs);
+            var member = findMemberByID(memberID);
+            var items = findItemsByIDs(itemIDs);
 
             var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
             var discountToApply = Math.Max(birthdayDiscount, promoCodeDiscount);
             var totalPayable = CalculateTotalPayable(items, discountToApply);
 
-            // log and persist
-            LoggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
-            PaymentService.Charge(memberID, totalPayable);
+            log(LogLevel.Info, $"We got member {member.Name} hooked!");
+            chargeMember(memberID, totalPayable);
         }
 
         public static decimal CalculateTotalPayable(IEnumerable<Item> items, decimal discountToApply)
