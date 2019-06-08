@@ -27,14 +27,29 @@ namespace Putn
             var member = this.memberRepo.FindByID(memberID);
             var items = this.itemRepo.FindByIDs(itemIDs);
 
-            var memberBirthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
+            var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
-            var discountToAppy = Math.Max(memberBirthdayDiscount, promoCodeDiscount);
+            var discountToAppy = Math.Max(birthdayDiscount, promoCodeDiscount);
             var totalPayable = CalculateTotalPayable(items, discountToAppy);
 
             // log and persist
             this.loggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
             this.paymentService.Charge(memberID, totalPayable);
+        }
+
+        public static double CalculateTotalPayable(IEnumerable<Item> items, double discountToAppy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static double CalculateDiscountForPromoCode(string promoCode, DateTime when)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static double CalculateDiscountForMemberBirthday(Member member, DateTime when)
+        {
+            throw new NotImplementedException();
         }
     }
 }
