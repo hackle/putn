@@ -30,7 +30,7 @@ namespace Putn
                 memberRepoMock.Object);
 
             // Act
-            shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
+            shoppingService.Checkout(itemIDs, memberID, promoCode: null, when: DateTime.Now);
 
             // Assert
             paymentServiceMock.Verify(r => r.Charge(memberID, 0), Times.Once);
@@ -64,7 +64,7 @@ namespace Putn
                 memberRepoMock.Object);
 
             // Act
-            shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
+            shoppingService.Checkout(itemIDs, memberID, promoCode: null, when: DateTime.Now);
 
             // Assert
             paymentServiceMock.Verify(r => r.Charge(memberID, 150), Times.Once);

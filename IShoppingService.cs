@@ -5,6 +5,6 @@ namespace Putn
 {
     public interface IShoppingService
     {
-        void Buy(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when);
+        void Checkout(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when);
     }
 }

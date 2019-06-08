@@ -22,7 +22,8 @@ A contrived shopping feature that works as follows,
 
 ### How discounts are calculated
 - if member is having a birthday, then a certain discount is given
-- if a promo code is presented then a discount is given
+- if promo code "AM" is presented and checkout time is AM then a discount is given
+- similarly for promo code "PM"
 - only some items are discountable
 - the higher discount applies if an item qualifies for more than one types of discounts
 

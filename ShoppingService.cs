@@ -22,7 +22,7 @@ namespace Putn
             this.memberRepo = memberRepo;
         }
 
-        public void Buy(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
+        public void Checkout(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
         {
             var member = this.memberRepo.FindByID(memberID);
             var items = this.itemRepo.FindByIDs(itemIDs);

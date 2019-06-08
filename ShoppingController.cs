@@ -11,9 +11,9 @@ namespace Putn
             this.shoppingService = shoppingService;
         }
 
-        public void Buy(BuyRequest request)
+        public void Checkout(BuyRequest request)
         {
-            this.shoppingService.Buy(request.ItemIDs, ContextualMemberID, request.PromoCode, DateTime.Now);
+            this.shoppingService.Checkout(request.ItemIDs, ContextualMemberID, request.PromoCode, DateTime.Now);
         }
 
         private int ContextualMemberID = 20190620;
