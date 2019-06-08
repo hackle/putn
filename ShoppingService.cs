@@ -4,28 +4,12 @@ using System.Linq;
 
 namespace Putn
 {
-    public class ShoppingService : IShoppingService
-    {
-        private readonly ILoggingService loggingService;
-        private readonly IItemRepository itemRepo;
-        private readonly IPaymentService paymentService;
-        private readonly IMemberRepository memberRepo;
-
-        public ShoppingService(ILoggingService loggingService, 
-            IItemRepository itemRepo,
-            IPaymentService paymentService,
-            IMemberRepository memberRepo)
+    public static class ShoppingService
+    {    
+        public static void Checkout(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
         {
-            this.loggingService = loggingService;
-            this.itemRepo = itemRepo;
-            this.paymentService = paymentService;
-            this.memberRepo = memberRepo;
-        }
-
-        public void Checkout(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
-        {
-            var member = this.memberRepo.FindByID(memberID);
-            var items = this.itemRepo.FindByIDs(itemIDs);
+            var member = MemberRepository.FindByID(memberID);
+            var items = ItemRepository.FindByIDs(itemIDs);
 
             var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
@@ -33,8 +17,8 @@ namespace Putn
             var totalPayable = CalculateTotalPayable(items, discountToApply);
 
             // log and persist
-            this.loggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
-            this.paymentService.Charge(memberID, totalPayable);
+            LoggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
+            PaymentService.Charge(memberID, totalPayable);
         }
 
         public static decimal CalculateTotalPayable(IEnumerable<Item> items, decimal discountToApply)
@@ -49,40 +33,22 @@ namespace Putn
 
         public static int CalculateDiscountForPromoCode(string promoCode, DateTime when)
         {
-            throw new NotImplementedException();
+            if (promoCode == "AM" && when.Hour < 12)
+            {
+                return 8;
+            }
+            else if (promoCode == "PM" && when.Hour >= 12)
+            {
+                return 6;
+            }
+
+            return 0;
         }
 
         public static decimal CalculateDiscountForMemberBirthday(Member member, DateTime when)
         {
-            throw new NotImplementedException();
+            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
+            return isBirthday ? 50 : 0;
         }
     }
 }
-
-// // decide birthday discount
-// var birthdayDiscountPercentage = 0;
-// var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
-// if (isBirthday)
-// {
-//     birthdayDiscountPercentage = 50;
-// }
-
-// // decide promo discount
-// var promoDiscountPercentage = 0;
-// if (promoCode == "AM" && when.Hour < 12)
-// {
-//     promoDiscountPercentage = 8;
-// }
-// else if (promoCode == "PM" && when.Hour >= 12)
-// {
-//     promoDiscountPercentage = 6;
-// }
-
-// // decide applicable discount and create purchases
-// var discountToApply = Math.Max(birthdayDiscountPercentage, promoDiscountPercentage);
-// var totalPayable = items.Sum(item => {
-//     if (item.IsDiscountable)
-//         return item.Price * (100 - discountToApply) / 100;
-//     else 
-//         return item.Price;
-// });

@@ -2,9 +2,9 @@
 
 namespace Putn
 {
-    public class PaymentService : IPaymentService
+    public static class PaymentService
     {
-        public void Charge(int memberID, decimal totalPayable)
+        public static void Charge(int memberID, decimal totalPayable)
         {
             throw new InvalidOperationException($"{nameof(PaymentService)} I.O. is nice but not for tests");
         }
