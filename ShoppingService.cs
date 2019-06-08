@@ -8,17 +8,17 @@ namespace Putn
     {
         private readonly ILoggingService loggingService;
         private readonly IItemRepository itemRepo;
-        private readonly IAccountRepository accountRepo;
+        private readonly IPaymentService paymentService;
         private readonly IMemberRepository memberRepo;
 
         public ShoppingService(ILoggingService loggingService, 
             IItemRepository itemRepo,
-            IAccountRepository accountRepo,
+            IPaymentService paymentService,
             IMemberRepository memberRepo)
         {
             this.loggingService = loggingService;
             this.itemRepo = itemRepo;
-            this.accountRepo = accountRepo;
+            this.paymentService = paymentService;
             this.memberRepo = memberRepo;
         }
 
@@ -58,7 +58,7 @@ namespace Putn
             // log and persist
             this.loggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
 
-            this.accountRepo.Debit(memberID, totalPayable);
+            this.paymentService.Charge(memberID, totalPayable);
         }
     }
 }

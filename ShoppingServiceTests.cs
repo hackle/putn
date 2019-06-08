@@ -16,7 +16,7 @@ namespace Putn
             var member = new Member { Birthday = DateTime.Now };
 
             var loggingServiceMock = new Mock<ILoggingService>();
-            var accountRepoMock = new Mock<IAccountRepository>();
+            var accountRepoMock = new Mock<IPaymentService>();
 
             var itemRepoMock = new Mock<IItemRepository>();
             itemRepoMock.Setup(i => i.FindByIDs(itemIDs)).Returns(new Item[]{});
@@ -33,7 +33,7 @@ namespace Putn
             shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
 
             // Assert
-            accountRepoMock.Verify(r => r.Debit(memberID, 0), Times.Once);
+            accountRepoMock.Verify(r => r.Charge(memberID, 0), Times.Once);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace Putn
             var member = new Member { Birthday = DateTime.Now };
 
             var loggingServiceMock = new Mock<ILoggingService>();
-            var accountRepoMock = new Mock<IAccountRepository>();
+            var accountRepoMock = new Mock<IPaymentService>();
 
             var itemRepoMock = new Mock<IItemRepository>();
             itemRepoMock.Setup(i => i.FindByIDs(itemIDs)).Returns(items);
@@ -67,7 +67,7 @@ namespace Putn
             shoppingService.Buy(itemIDs, memberID, promoCode: null, when: DateTime.Now);
 
             // Assert
-            accountRepoMock.Verify(r => r.Debit(memberID, 150), Times.Once);
+            accountRepoMock.Verify(r => r.Charge(memberID, 150), Times.Once);
         }
 
         [Fact]
