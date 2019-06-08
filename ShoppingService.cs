@@ -42,7 +42,7 @@ namespace Putn
             throw new NotImplementedException();
         }
 
-        public static double CalculateDiscountForPromoCode(string promoCode, DateTime when)
+        public static int CalculateDiscountForPromoCode(string promoCode, DateTime when)
         {
             throw new NotImplementedException();
         }
