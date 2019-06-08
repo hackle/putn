@@ -29,8 +29,8 @@ namespace Putn
 
             var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
-            var discountToAppy = Math.Max(birthdayDiscount, promoCodeDiscount);
-            var totalPayable = CalculateTotalPayable(items, discountToAppy);
+            var discountToApply = Math.Max(birthdayDiscount, promoCodeDiscount);
+            var totalPayable = CalculateTotalPayable(items, discountToApply);
 
             // log and persist
             this.loggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
