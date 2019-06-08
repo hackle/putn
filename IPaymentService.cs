@@ -2,6 +2,6 @@
 {
     public interface IPaymentService
     {
-        void Charge(int memberID, decimal totalPayable);
+        void Charge(int memberID, double totalPayable);
     }
 }

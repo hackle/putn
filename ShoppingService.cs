@@ -27,37 +27,13 @@ namespace Putn
             var member = this.memberRepo.FindByID(memberID);
             var items = this.itemRepo.FindByIDs(itemIDs);
 
-            // decide birthday discount
-            var memberDiscountPercentage = 0;
-            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
-            if (isBirthday)
-            {
-                memberDiscountPercentage = 50;
-            }
-
-            // decide promo discount
-            var promoDiscountPercentage = 0;
-            if (promoCode == "AM" && when.Hour < 12)
-            {
-                promoDiscountPercentage = 8;
-            }
-            else if (promoCode == "PM" && when.Hour >= 12)
-            {
-                promoDiscountPercentage = 6;
-            }
-
-            // decide applicable discount and create purchases
-            var discountToApply = Math.Max(memberDiscountPercentage, promoDiscountPercentage);
-            var totalPayable = items.Sum(item => {
-                if (item.IsDiscountable)
-                    return item.Price * (100 - discountToApply) / 100;
-                else 
-                    return item.Price;
-            });
+            var memberBirthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
+            var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
+            var discountToAppy = Math.Max(memberBirthdayDiscount, promoCodeDiscount);
+            var totalPayable = CalculateTotalPayable(items, discountToAppy);
 
             // log and persist
             this.loggingService.Log(LogLevel.Info, $"We got member {member.Name} hooked!");
-
             this.paymentService.Charge(memberID, totalPayable);
         }
     }
