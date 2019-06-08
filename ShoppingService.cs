@@ -28,11 +28,11 @@ namespace Putn
             var items = this.itemRepo.FindByIDs(itemIDs);
 
             // decide birthday discount
-            var memberDiscountPercentage = 0;
+            var birthdayDiscountPercentage = 0;
             var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
             if (isBirthday)
             {
-                memberDiscountPercentage = 50;
+                birthdayDiscountPercentage = 50;
             }
 
             // decide promo discount
@@ -47,7 +47,7 @@ namespace Putn
             }
 
             // decide applicable discount and create purchases
-            var discountToApply = Math.Max(memberDiscountPercentage, promoDiscountPercentage);
+            var discountToApply = Math.Max(birthdayDiscountPercentage, promoDiscountPercentage);
             var totalPayable = items.Sum(item => {
                 if (item.IsDiscountable)
                     return item.Price * (100 - discountToApply) / 100;
