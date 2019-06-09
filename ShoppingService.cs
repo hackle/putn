@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 
 namespace Putn
 {
@@ -9,7 +10,9 @@ namespace Putn
         public static void Checkout(IEnumerable<int> itemIDs, int memberID, string promoCode, DateTime when) 
         {
             var member = MemberRepository.FindByID(memberID);
-            var items = ItemRepository.FindByIDs(itemIDs);
+            if (member == null)
+                throw new MemberNotFoundException(memberID);
+            var items = ItemRepository.FindByIDs(itemIDs) ?? new Item[]{};
 
             var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
