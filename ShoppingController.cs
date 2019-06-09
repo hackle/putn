@@ -9,8 +9,14 @@ namespace Putn
             ShoppingService.Checkout(
                 request.PromoCode, 
                 DateTime.Now,
-                () => MemberRepository.FindByID(ContextualMemberID),
-                () => ItemRepository.FindByIDs(request.ItemIDs),
+                () => {
+                    var member = MemberRepository.FindByID(ContextualMemberID);
+                    if (member == null)
+                        throw new MemberNotFoundException(ContextualMemberID);
+
+                    return member;
+                },
+                () => ItemRepository.FindByIDs(request.ItemIDs) ?? new Item[]{},
                 total => {
                     LoggingService.Log(LogLevel.Info, $"Member {ContextualMemberID} charged {total}");
                     PaymentService.Charge(ContextualMemberID, total);
