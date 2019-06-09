@@ -30,5 +30,7 @@ A contrived shopping feature that works as follows,
 ## the goal of the workshop
 
 * halve the code for this project
-* happily write simple code and simple unit tests, and benefit now! Not later.
-* and then a great reveal!
+* happily write simple code and simple unit tests, and benefit now! Not later
+* and then a great reveal
+
+# enjoy coding, pragmatically! :)
