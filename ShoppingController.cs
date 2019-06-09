@@ -6,14 +6,15 @@ namespace Putn
     {
         public void Checkout(BuyRequest request)
         {
-            ShoppingService.Checkout(request.ItemIDs, 
-                ContextualMemberID, 
+            ShoppingService.Checkout(
                 request.PromoCode, 
                 DateTime.Now,
-                MemberRepository.FindByID,
-                ItemRepository.FindByIDs,
-                LoggingService.Log,
-                PaymentService.Charge);
+                () => MemberRepository.FindByID(ContextualMemberID),
+                () => ItemRepository.FindByIDs(request.ItemIDs),
+                total => {
+                    LoggingService.Log(LogLevel.Info, $"Member {ContextualMemberID} charged {total}");
+                    PaymentService.Charge(ContextualMemberID, total);
+                });
         }
 
         private int ContextualMemberID = 20190620;

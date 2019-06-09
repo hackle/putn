@@ -11,24 +11,19 @@ namespace Putn
         public void If_member_is_buying_nothing_Then_should_not_be_charged()
         {
             // Arrange
-            var itemIDs = Enumerable.Empty<int>();
-            var memberID = 12345;
             var member = new Member { Birthday = DateTime.Now };
-            var chargeMemberMock = new Mock<Action<int, decimal>>();
+            var chargeMemberMock = new Mock<Action<decimal>>();
 
             // Act
-            ShoppingService.Checkout(itemIDs, 
-                memberID, 
+            ShoppingService.Checkout(
                 promoCode: null, 
                 when: DateTime.Now,
-                findMemberByID: id => member,
-                findItemsByIDs: ids => new Item[]{},
-                log: (level, msg) => {return;},
-                chargeMember: chargeMemberMock.Object
-                );
+                findMember: () => member,
+                findItems: () => new Item[]{},
+                chargeMember: chargeMemberMock.Object);
 
             // Assert
-            chargeMemberMock.Verify(r => r(memberID, 0), Times.Once);
+            chargeMemberMock.Verify(r => r(0), Times.Once);
         }
 
         [Fact]
