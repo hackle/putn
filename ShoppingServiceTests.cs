@@ -10,30 +10,25 @@ namespace Putn
         [Fact]
         public void If_member_is_buying_nothing_Then_should_not_be_charged()
         {
-            // // Arrange
-            // var itemIDs = Enumerable.Empty<int>();
-            // var memberID = 12345;
-            // var member = new Member { Birthday = DateTime.Now };
+            // Arrange
+            var itemIDs = Enumerable.Empty<int>();
+            var memberID = 12345;
+            var member = new Member { Birthday = DateTime.Now };
+            var chargeMemberMock = new Mock<Action<int, decimal>>();
 
-            // var loggingServiceMock = new Mock<ILoggingService>();
-            // var paymentServiceMock = new Mock<IPaymentService>();
+            // Act
+            ShoppingService.Checkout(itemIDs, 
+                memberID, 
+                promoCode: null, 
+                when: DateTime.Now,
+                findMemberByID: id => member,
+                findItemsByIDs: ids => new Item[]{},
+                log: (level, msg) => {return;},
+                chargeMember: chargeMemberMock.Object
+                );
 
-            // var itemRepoMock = new Mock<IItemRepository>();
-            // itemRepoMock.Setup(i => i.FindByIDs(itemIDs)).Returns(new Item[]{});
-
-            // var memberRepoMock = new Mock<IMemberRepository>();
-            // memberRepoMock.Setup(m => m.FindByID(memberID)).Returns(member);
-
-            // var shoppingService = new ShoppingService(loggingServiceMock.Object, 
-            //     itemRepoMock.Object,
-            //     paymentServiceMock.Object, 
-            //     memberRepoMock.Object);
-
-            // // Act
-            // shoppingService.Checkout(itemIDs, memberID, promoCode: null, when: DateTime.Now);
-
-            // // Assert
-            // paymentServiceMock.Verify(r => r.Charge(memberID, 0), Times.Once);
+            // Assert
+            chargeMemberMock.Verify(r => r(memberID, 0), Times.Once);
         }
 
         [Fact]
