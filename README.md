@@ -11,6 +11,7 @@ Be warned: the code in this project may change from time to time and workshop to
 - .NET Core
 - Git
 - an IDE to work with, e.g. Visual Studio Code
+- ... and an open mind :)
 
 ## The example explained
 
