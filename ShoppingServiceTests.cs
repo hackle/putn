@@ -26,7 +26,7 @@ namespace Putn
         {
             var actual = ShoppingService.CalculateTotalPayable(items, discountToApply);
 
-            Assert.Equal(actual, expectedTotal);
+            Assert.Equal(expectedTotal, actual);
         }
     }
 }
