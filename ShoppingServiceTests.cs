@@ -37,7 +37,7 @@ namespace Putn
         }
 
         [Fact]
-        public void If_item_is_not_discountable_Although_member_is_having_birthday_Then_should_not_be_charged_fully()
+        public void If_item_is_not_discountable_Although_member_is_having_birthday_Then_should_be_charged_fully()
         {
             // Arrange
             var itemIDs = new int[]{ 11, 22 };
@@ -71,7 +71,7 @@ namespace Putn
         }
 
         [Fact]
-        public void If_item_is_discountable_And_member_is_having_birthday_And_Then_discount_by_50_percent()
+        public void If_item_is_discountable_And_member_is_having_birthday_Then_discount_by_50_percent()
         {
             // try write this test
         }
@@ -83,7 +83,7 @@ namespace Putn
         }
 
         [Fact]
-        public void If_item_is_discountable_And_member_is_not_having_birthday_And_promo_code_is_AM_and_time_is_AM_Then_discount_by_10_percent()
+        public void If_item_is_discountable_And_member_is_not_having_birthday_And_promo_code_is_AM_and_time_is_AM_Then_discount_by_8_percent()
         {
             // try write this test
         }
