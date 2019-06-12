@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 
 namespace Putn
 {
@@ -16,7 +17,9 @@ namespace Putn
             Action<int, decimal> chargeMember) 
         {
             var member = findMemberByID(memberID);
-            var items = findItemsByIDs(itemIDs);
+            if (member == null)
+                throw new MemberNotFoundException(memberID);
+            var items = findItemsByIDs(itemIDs) ?? new Item[]{};
 
             var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
