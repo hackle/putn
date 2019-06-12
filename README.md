@@ -11,6 +11,7 @@ Be warned: the code in this project may change from time to time and workshop to
 - .NET Core
 - Git
 - an IDE to work with, e.g. Visual Studio Code
+- ... and an open mind :)
 
 ## The example explained
 
@@ -30,5 +31,7 @@ A contrived shopping feature that works as follows,
 ## the goal of the workshop
 
 * halve the code for this project
-* happily write simple code and simple unit tests, and benefit now! Not later.
-* and then a great reveal!
+* happily write simple code and simple unit tests, and benefit now! Not later
+* and then a great reveal
+
+# enjoy coding, pragmatically! :)
