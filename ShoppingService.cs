@@ -29,7 +29,7 @@ namespace Putn
 
             // decide birthday discount
             var birthdayDiscountPercentage = 0;
-            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
+            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Day == when.Day;
             if (isBirthday)
             {
                 birthdayDiscountPercentage = 50;
