@@ -50,7 +50,7 @@ namespace Putn
 
         public static decimal CalculateDiscountForMemberBirthday(Member member, DateTime when)
         {
-            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Date == when.Date;
+            var isBirthday = member.Birthday.Month == when.Month && member.Birthday.Day == when.Day;
             return isBirthday ? 50 : 0;
         }
     }
