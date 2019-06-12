@@ -24,7 +24,7 @@ namespace Putn
             // Act
             ShoppingService.Checkout(itemIDs, 
                 memberID, 
-                promoCode: null, 
+                promoCode: promoCode, 
                 when: checkoutTime,
                 findMemberByID: id => member,
                 findItemsByIDs: ids => items,
