@@ -1,37 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using Moq;
 using Xunit;
 
 namespace Putn
 {
     public class ShoppingServiceTests
     {
-        [Theory]
-        [MemberData(nameof(TotalChargedTestCases))]
-        public void Member_is_charged_per_discounts(
-            IEnumerable<Item> items,
-            Member member,
-            string promoCode,
-            DateTime checkoutTime,
-            decimal expectedTotalCharged)
-        {
-            // Arrange
-            var chargeMemberMock = new Mock<Action<decimal>>();
-
-            // Act
-            ShoppingService.Checkout(
-                promoCode: null, 
-                when: checkoutTime,
-                findMember: () => member,
-                findItems: () => items,
-                chargeMember: chargeMemberMock.Object);
-
-            // Assert
-            chargeMemberMock.Verify(r => r(expectedTotalCharged), Times.Once);
-        }
-
         public static object[][] TotalChargedTestCases = new object[][]
         {
             // buying nothing
@@ -53,5 +27,27 @@ namespace Putn
                 50
             },
         };
+        public static object[][] CalculateTotalPayableTestCases = new object[][] 
+        {
+            // no item at all
+            new object[] { new Item[]{}, 20, 0 },
+            // single discountable
+            new object[] 
+            { 
+                new Item[]{ new Item { IsDiscountable = true, Price = 100 } }, 
+                20, 
+                80
+            },
+            // add more test cases?
+        };
+
+        [Theory]
+        [MemberData(nameof(CalculateTotalPayableTestCases))]
+        public void CalculateTotalPayableTests(Item[] items, decimal discountToApply, decimal expectedTotal)
+        {
+            var actual = ShoppingService.CalculateTotalPayable(items, discountToApply);
+
+            Assert.Equal(actual, expectedTotal);
+        }
     }
 }
