@@ -54,8 +54,4 @@ namespace Putn
             return isBirthday ? 50 : 0;
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> lab1b
