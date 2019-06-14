@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Putn
@@ -35,15 +36,19 @@ namespace Putn
 
         public static object[][] DiscountForPromoCodeTestCases = new object[][]
         {
-            // create your test cases
+            new object[] { "AM", DateTime.Parse("2019-06-19 12:15:00"), 0 },
+            new object[] { "AM", DateTime.Parse("2019-06-19 11:15:00"), 8 },
+            new object[] { "PM", DateTime.Parse("2019-06-19 12:15:00"), 6 },
+            new object[] { "PM", DateTime.Parse("2019-06-19 11:15:00"), 0 },
         };
 
         [Theory]
         [MemberData(nameof(DiscountForPromoCodeTestCases))]
-        public void CalculateDiscountForPromoCodeTest() // <-- add parameters for input and expected result
+        public void CalculateDiscountForPromoCodeTest(string promoCode, DateTime when, decimal expectedDiscount)
         {
-            // write your test for ShoppingService.CalculateDiscountForPromoCode(promoCode, when);
-            // try keep it 2 lines only!
+            var actual = ShoppingService.CalculateDiscountForPromoCode(promoCode, when);
+            
+            Assert.Equal(expectedDiscount, actual);
         }
     }
 }
