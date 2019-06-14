@@ -14,13 +14,10 @@ namespace Putn
             Func<IEnumerable<Item>> findItems,
             Action<decimal> chargeMember) 
         {
-            var member = findMember();
-            var items = findItems();
-
-            var birthdayDiscount = CalculateDiscountForMemberBirthday(member, when);
+            var birthdayDiscount = CalculateDiscountForMemberBirthday(findMember(), when);
             var promoCodeDiscount = CalculateDiscountForPromoCode(promoCode, when);
             var discountToApply = Math.Max(birthdayDiscount, promoCodeDiscount);
-            var totalPayable = CalculateTotalPayable(items, discountToApply);
+            var totalPayable = CalculateTotalPayable(findItems(), discountToApply);
 
             chargeMember(totalPayable);
         }
