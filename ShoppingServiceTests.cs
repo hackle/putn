@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Putn
 {
@@ -15,7 +15,7 @@ namespace Putn
                 new Member { Birthday = new DateTime(1983, 4, 2) },
                 null,
                 new DateTime(2019, 4, 1),
-                0
+                0m
             },
             // having birthday!
             new object[]
@@ -24,30 +24,35 @@ namespace Putn
                 new Member { Birthday = new DateTime(1983, 4, 2) },
                 null,
                 new DateTime(2019, 4, 2),
-                50
+                50m
             },
         };
         public static object[][] CalculateTotalPayableTestCases = new object[][] 
         {
             // no item at all
-            new object[] { new Item[]{}, 20, 0 },
+            new object[] 
+            { 
+                new Item[]{}, 
+                20m, 
+                0m 
+            },
             // single discountable
             new object[] 
             { 
                 new Item[]{ new Item { IsDiscountable = true, Price = 100 } }, 
-                20, 
-                80
+                20m, 
+                80m
             },
             // add more test cases?
         };
 
         [Theory]
-        [MemberData(nameof(CalculateTotalPayableTestCases))]
+        [TestCaseSource(nameof(CalculateTotalPayableTestCases))]
         public void CalculateTotalPayableTests(Item[] items, decimal discountToApply, decimal expectedTotal)
         {
             var actual = ShoppingService.CalculateTotalPayable(items, discountToApply);
 
-            Assert.Equal(expectedTotal, actual);
+            Assert.AreEqual(expectedTotal, actual);
         }
     }
 }

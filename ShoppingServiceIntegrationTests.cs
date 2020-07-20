@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Putn
 {
     public class ShoppingServiceIntegrationTests
     {
         [Theory]
-        [MemberData(nameof(TotalChargedTestCases))]
+        [TestCaseSource(nameof(TotalChargedTestCases))]
         public void Member_is_charged_per_discounts(
             IEnumerable<Item> items,
             Member member,
@@ -40,7 +40,7 @@ namespace Putn
                 new Member { Birthday = new DateTime(1983, 4, 2) },
                 null,
                 new DateTime(2019, 4, 1),
-                0
+                0m
             },
             // having birthday!
             new object[]
@@ -49,7 +49,7 @@ namespace Putn
                 new Member { Birthday = new DateTime(1983, 4, 2) },
                 null,
                 new DateTime(2019, 4, 2),
-                50
+                50m
             },
         };
     }
