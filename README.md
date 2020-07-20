@@ -13,9 +13,9 @@ Be warned: the code in this project may change from time to time and workshop to
 - an IDE to work with, e.g. Visual Studio Code
 - ... and an open mind :)
 
-## The example explained
+## The example - a shopping service
 
-A contrived shopping feature that works as follows,
+A contrived shopping service that works as follows,
 
 1. accepts a `BuyRequest`
 2. calculates and applies discounts
@@ -32,6 +32,6 @@ A contrived shopping feature that works as follows,
 
 * halve the code for this project
 * happily write simple code and simple unit tests, and benefit now! Not later
-* and then a great reveal
+* and some more excitement 
 
 # enjoy coding, pragmatically! :)
