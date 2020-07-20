@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Putn
 {
@@ -28,17 +28,17 @@ namespace Putn
         };
 
         [Theory]
-        [MemberData(nameof(CalculateTotalPayableTestCases))]
+        [TestCaseSource(nameof(CalculateTotalPayableTestCases))]
         public void CalculateTotalPayableTests_WithTuple(
             (Item[] items, decimal discountToApply, decimal expectedTotal) testcase)
         {
             var actual = ShoppingService.CalculateTotalPayable(testcase.items, testcase.discountToApply);
 
-            Assert.Equal(testcase.expectedTotal, actual);
+            Assert.AreEqual(testcase.expectedTotal, actual);
         }
 
 
-        [Fact]
+        [Test]
         public void CalculateTotalPayableTests_Nested()
         {
             var testcases = new []
@@ -59,11 +59,12 @@ namespace Putn
                 }
             };
 
+            // There is a problem - the loop stops on the first failure. 
             foreach (var testcase in testcases)
             {
                 var actual = ShoppingService.CalculateTotalPayable(testcase.Items, testcase.DiscountToApply);
 
-                Assert.Equal(testcase.ExpectedTotal, actual);
+                Assert.AreEqual(testcase.ExpectedTotal, actual, testcase.Description);
             }
         }
 
@@ -76,12 +77,12 @@ namespace Putn
         }
 
         [Theory]
-        [MemberData(nameof(CalculateTotalTestCases))]
+        [TestCaseSource(nameof(CalculateTotalTestCases))]
         public void CalculateTotalPayableTests_WithType(CalculateTotalTestCase testcase)
         {
             var actual = ShoppingService.CalculateTotalPayable(testcase.Items, testcase.DiscountToApply);
 
-            Assert.Equal(testcase.ExpectedTotal, actual);
+            Assert.AreEqual(testcase.ExpectedTotal, actual, testcase.Description);
         }
 
         public static object[][] CalculateTotalTestCases =
