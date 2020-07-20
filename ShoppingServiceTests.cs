@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Putn
 {
     public class ShoppingServiceTests
     {
-        [Fact]
+        [Test]
         public void If_member_is_buying_nothing_Then_should_not_be_charged()
         {
             // Arrange
@@ -36,7 +36,7 @@ namespace Putn
             paymentServiceMock.Verify(r => r.Charge(memberID, 0), Times.Once);
         }
 
-        [Fact]
+        [Test]
         public void If_item_is_not_discountable_Although_member_is_having_birthday_Then_should_be_charged_fully()
         {
             // Arrange
@@ -70,19 +70,19 @@ namespace Putn
             paymentServiceMock.Verify(r => r.Charge(memberID, 150), Times.Once);
         }
 
-        [Fact]
+        [Test]
         public void If_item_is_discountable_And_member_is_having_birthday_Then_discount_by_50_percent()
         {
             // try write this test
         }
 
-        [Fact]
+        [Test]
         public void If_item_is_discountable_And_member_is_having_birthday_And_promo_code_is_AM_and_time_is_AM_Then_discount_by_50_percent()
         {
             // try write this test
         }
 
-        [Fact]
+        [Test]
         public void If_item_is_discountable_And_member_is_not_having_birthday_And_promo_code_is_AM_and_time_is_AM_Then_discount_by_8_percent()
         {
             // try write this test
