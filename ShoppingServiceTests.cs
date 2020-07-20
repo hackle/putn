@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Putn
 {
@@ -21,12 +21,12 @@ namespace Putn
         };
 
         [Theory]
-        [MemberData(nameof(CalculateTotalPayableTestCases))]
+        [TestCaseSource(nameof(CalculateTotalPayableTestCases))]
         public void CalculateTotalPayableTests(Item[] items, decimal discountToApply, decimal expectedTotal)
         {
             var actual = ShoppingService.CalculateTotalPayable(items, discountToApply);
 
-            Assert.Equal(expectedTotal, actual);
+            Assert.AreEqual(expectedTotal, actual);
         }
     }
 }

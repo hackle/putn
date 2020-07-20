@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Putn
 {
     public class ShoppingServiceIntegrationTests
     {
         [Theory]
-        [MemberData(nameof(TotalChargedTestCases))]
+        [TestCaseSource(nameof(TotalChargedTestCases))]
         public void Member_is_charged_per_discounts(
             IEnumerable<int> itemIDs,
             IEnumerable<Item> items,
