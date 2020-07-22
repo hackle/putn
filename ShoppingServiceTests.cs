@@ -1,5 +1,4 @@
-﻿﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
 
@@ -39,23 +38,6 @@ namespace Putn
             var actual = ShoppingService.CalculateTotalPayable(items, discountToApply);
 
             Assert.AreEqual(expectedTotal, actual);
-        }
-
-        public static object[][] DiscountForPromoCodeTestCases = new object[][]
-        {
-            new object[] { "AM", DateTime.Parse("2019-06-19 12:15:00"), 0 },
-            new object[] { "AM", DateTime.Parse("2019-06-19 11:15:00"), 8 },
-            new object[] { "PM", DateTime.Parse("2019-06-19 12:15:00"), 6 },
-            new object[] { "PM", DateTime.Parse("2019-06-19 11:15:00"), 0 },
-        };
-
-        [Theory]
-        [TestCaseSource(nameof(DiscountForPromoCodeTestCases))]
-        public void CalculateDiscountForPromoCodeTest(string promoCode, DateTime when, decimal expectedDiscount)
-        {
-            var actual = ShoppingService.CalculateDiscountForPromoCode(promoCode, when);
-            
-            Assert.AreEqual(expectedDiscount, actual);
         }
     }
 }
