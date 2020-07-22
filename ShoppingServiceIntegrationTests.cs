@@ -46,7 +46,7 @@ namespace Putn
                 new Member { Birthday = new DateTime(1983, 4, 2) },
                 null,
                 new DateTime(2019, 4, 1),
-                0
+                0m
             },
             // having birthday!
             new object[]
@@ -57,7 +57,7 @@ namespace Putn
                 new Member { Birthday = new DateTime(1983, 4, 2) },
                 null,
                 new DateTime(2019, 4, 2),
-                50
+                50m
             },
         };
     }

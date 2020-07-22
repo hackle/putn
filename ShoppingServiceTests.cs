@@ -1,5 +1,5 @@
-using System;
-using System.Linq;
+﻿﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
 
 namespace Putn
@@ -9,13 +9,13 @@ namespace Putn
         public static object[][] CalculateTotalPayableTestCases = new object[][] 
         {
             // no item at all
-            new object[] { new Item[]{}, 20, 0 },
+            new object[] { new Item[]{}, 20m, 0m },
             // single discountable
             new object[] 
             { 
                 new Item[]{ new Item { IsDiscountable = true, Price = 100 } }, 
-                20, 
-                80
+                20m, 
+                80m
             },
             // add more test cases?
         };
