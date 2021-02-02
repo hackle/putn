@@ -1,5 +1,5 @@
 # Test Cheap, Code Simple
-## a.k.a. Pragmatic Unit Testing Now!
+(a.k.a. Pragmatic Unit Testing Now!)
 
 This the sample project for the workshop, in C# / .NET Core.
 
@@ -29,7 +29,7 @@ A contrived shopping service that works as follows,
 
 ## The goal of the workshop
 * halve the code for this project
-* happily write simple code and unit tests, and benefit now! Not later
+* happily write simple code and cheap unit tests, and benefit now! Not later
 * and some more excitement 
 
 # Enjoy coding! :)
